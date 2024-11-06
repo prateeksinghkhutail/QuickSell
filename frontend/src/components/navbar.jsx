@@ -6,6 +6,7 @@ const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(0); // Store wallet balance
   const dropdownRef = useRef(null); // Reference to the dropdown menu
 
   const toggleNav = () => {
@@ -20,7 +21,29 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
+    if (token) {
+      fetchWalletBalance(token); // Fetch wallet balance if logged in
+    }
   }, []);
+
+  // Fetch wallet balance from the API
+  const fetchWalletBalance = async (token) => {
+    try {
+      const response = await fetch("http://localhost:8000/api/user/wallet", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Send token for authorization
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setWalletBalance(data.walletBalance); // Assuming API returns { walletBalance: 5000 }
+      } else {
+        console.error("Failed to fetch wallet balance.");
+      }
+    } catch (error) {
+      console.error("Error fetching wallet balance:", error);
+    }
+  };
 
   // Close the dropdown when clicking outside
   useEffect(() => {
@@ -91,10 +114,10 @@ const Navbar = () => {
                       Profile
                     </Link>
                     <div className="block px-4 py-2 text-gray-800">
-                      Wallet Balance: $5000
+                      Wallet Balance: ${walletBalance}
                     </div>
                     <Link
-                      to="/login"
+                      to="/logout"
                       className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                       onClick={() => {
                         localStorage.removeItem("token");
