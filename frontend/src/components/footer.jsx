@@ -79,7 +79,7 @@ const Footer = () => {
 
         {/* Bottom Section: Copyright */}
         <div className="text-center text-gray-500 text-sm mt-8">
-          © 2023 QuickSell. All rights reserved.
+          © 2024 QuickSell. All rights reserved.
         </div>
       </div>
     </footer>

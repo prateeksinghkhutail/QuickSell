@@ -1,19 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null); // Reference to the dropdown menu
 
   const toggleNav = () => {
     setNavOpen(!navOpen);
+  };
+
+  const handleDropdownToggle = () => {
+    setDropdownOpen(!dropdownOpen);
   };
 
   // Check if the user is logged in based on the presence of a token in localStorage
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
+  }, []);
+
+  // Close the dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
@@ -39,7 +59,7 @@ const Navbar = () => {
             <Link to="/sell" className="text-gray-700 hover:text-blue-600">
               Sell
             </Link>
-            <Link to="/homepage" className="text-gray-700 hover:text-blue-600">
+            <Link to="/buy" className="text-gray-700 hover:text-blue-600">
               Buy
             </Link>
             <Link to="/contact" className="text-gray-700 hover:text-blue-600">
@@ -49,18 +69,44 @@ const Navbar = () => {
 
           {/* Right corner: Login and Profile Icon */}
           <div className="hidden md:flex items-center space-x-4">
-            {!isLoggedIn && (
+            {!isLoggedIn ? (
               <Link to="/login" className="text-gray-700 hover:text-blue-600">
                 Login
               </Link>
-            )}
-            {isLoggedIn && (
-              <Link
-                to="/profilepage"
-                className="text-gray-700 hover:text-blue-600"
-              >
-                <FaUserCircle className="text-gray-700 text-2xl hover:text-blue-600 cursor-pointer" />
-              </Link>
+            ) : (
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={handleDropdownToggle}
+                  className="focus:outline-none"
+                >
+                  <FaUserCircle className="text-gray-700 text-2xl hover:text-blue-600 cursor-pointer" />
+                </button>
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-20">
+                    <Link
+                      to="/profilepage"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      Profile
+                    </Link>
+                    <div className="block px-4 py-2 text-gray-800">
+                      Wallet Balance: $5000
+                    </div>
+                    <Link
+                      to="/login"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        setIsLoggedIn(false);
+                        setDropdownOpen(false);
+                      }}
+                    >
+                      Logout
+                    </Link>
+                  </div>
+                )}
+              </div>
             )}
           </div>
 
@@ -92,13 +138,20 @@ const Navbar = () => {
               Sell
             </Link>
             <Link
+              to="/buy"
+              className="block text-gray-700 hover:text-blue-600"
+              onClick={toggleNav}
+            >
+              Buy
+            </Link>
+            <Link
               to="/contact"
               className="block text-gray-700 hover:text-blue-600"
               onClick={toggleNav}
             >
               Contact
             </Link>
-            {!isLoggedIn && (
+            {!isLoggedIn ? (
               <Link
                 to="/login"
                 className="block text-gray-700 hover:text-blue-600"
@@ -106,11 +159,13 @@ const Navbar = () => {
               >
                 Login
               </Link>
-            )}
-            {isLoggedIn && (
-              <div className="block text-gray-700 hover:text-blue-600">
+            ) : (
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="block text-gray-700 hover:text-blue-600"
+              >
                 Profile
-              </div>
+              </button>
             )}
           </div>
         </div>
