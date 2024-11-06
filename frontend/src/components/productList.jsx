@@ -8,12 +8,12 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/products"); // Update this to match your actual API endpoint
+        const response = await fetch("http://localhost:8000/api/products"); // Update this to match your actual API endpoint
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         setProducts(data);
       } catch (error) {
         console.error("Failed to fetch products:", error);

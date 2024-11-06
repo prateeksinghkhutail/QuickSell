@@ -4,7 +4,7 @@ const SellCard = ({ product }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden p-4">
       <img
-        src={`http://localhost:5000${product.prodImage}`}
+        src={`http://localhost:8000${product.prodImage}`}
         alt={product.name}
         className="w-full h-48 object-cover rounded-md"
       />
