@@ -7,16 +7,15 @@ const Homepage = () => {
   return (
     <>
       <Navbar />
-      <div className="mt-24 bg-gray-900 text-white h-screen">
-        <div className="mt-10 p-10">
+      <div className="mt-24 flex bg-gray-900 flex-col  text-white h-screen">
+        <div className="mt-10 bg-gray-900 p-10">
           <Search />
           <div className="p-10">
             <ProductList />
           </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-
     </>
   );
 };

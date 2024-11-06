@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SellCard from "./sellCard";
 
-const ProductList = () => {
+const SellList = ({ refresh }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,7 +33,7 @@ const ProductList = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [refresh]);
 
   if (loading)
     return <p className="text-center">Loading selling products...</p>;
@@ -56,4 +56,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default SellList;

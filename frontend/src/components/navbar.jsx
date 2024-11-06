@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaBars, FaTimes, FaUserCircle } from 'react-icons/fa';
+import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -12,7 +12,7 @@ const Navbar = () => {
 
   // Check if the user is logged in based on the presence of a token in localStorage
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);
 
@@ -55,7 +55,12 @@ const Navbar = () => {
               </Link>
             )}
             {isLoggedIn && (
-              <FaUserCircle className="text-gray-700 text-2xl hover:text-blue-600 cursor-pointer" />
+              <Link
+                to="/profilepage"
+                className="text-gray-700 hover:text-blue-600"
+              >
+                <FaUserCircle className="text-gray-700 text-2xl hover:text-blue-600 cursor-pointer" />
+              </Link>
             )}
           </div>
 
