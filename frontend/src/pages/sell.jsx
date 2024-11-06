@@ -65,7 +65,6 @@ const Sell = () => {
       alert("An error occurred. Please try again.");
     }
   };
-
   return (
     <>
       <Navbar />
