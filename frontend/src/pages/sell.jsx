@@ -74,7 +74,7 @@ const Sell = () => {
             onClick={handleToggleForm}
             className="text-3xl bg-green-500 rounded p-3 rounded-md hover:bg-green-700 transition duration-200"
           >
-            Sell Product chut marwao
+            Sell Product chut marwao nahi marwaunga
           </button>
         </div>
 
