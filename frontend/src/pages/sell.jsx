@@ -75,7 +75,7 @@ const Sell = () => {
             onClick={handleToggleForm}
             className="text-3xl bg-green-500 rounded p-3 rounded-md hover:bg-green-700 transition duration-200"
           >
-            Sell Product
+            Sell Product chut
           </button>
         </div>
 
