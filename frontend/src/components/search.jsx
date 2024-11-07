@@ -1,22 +1,23 @@
 import React, { useState } from "react";
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch } from "react-icons/fa";
 
-const Search = () => {
-  const [query, setQuery] = useState("");
+const Search = ({ onSearch }) => {
+  const [input, setInput] = useState("");
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    console.log("Searching for:", query);
+  const handleChange = (e) => {
+    const query = e.target.value;
+    setInput(query);
+    onSearch(query);
   };
 
   return (
-    <div className="flex justify-center mt-8 px-4">
-      <form onSubmit={handleSearch} className="relative w-full max-w-md">
+    <div className="flex justify-center mt-8 px-2 ">
+      <form onSubmit={handleChange} className="relative w-full max-w-md">
         <input
           type="text"
           placeholder="Search for items..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={input}
+          onChange={handleChange}
           className="w-full text-black p-3 pl-10 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
         <button

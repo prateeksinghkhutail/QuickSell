@@ -10,6 +10,7 @@ import Login from "./pages/login";
 import Homepage from "./pages/homepage";
 import Sell from "./pages/sell";
 import ProfilePage from "./pages/profilePage";
+import Contact from "./pages/contact";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -42,6 +43,12 @@ function App() {
             path="/sell"
             element={
               isAuthenticated ? <Sell /> : <Navigate to="/login" replace />
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              isAuthenticated ? <Contact /> : <Navigate to="/login" replace />
             }
           />
 
