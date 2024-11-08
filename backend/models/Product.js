@@ -35,20 +35,23 @@ const productSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true  // Price for the product
+    required: false  // Price for the product
   },
   base_price: {
     type: Number,
     required: false  // base bid for the product
   },
   buyerStudentID: {
-    type: mongoose.Schema.Types.ObjectId,  // Reference to the User (Buyer)
+    type: String,  // Reference to the User (Buyer)
     ref: 'userDetails',
     default: null  // This will be null until the product is purchased
   },
   productStatus: {
     type: String,
-    enum: ['Available','Sale Pending', 'Sold'],  // Only 'Available' or 'Sold' status
+    default: 'Available'
+  },
+  category: {
+    type: String,
     default: 'Available'
   }
 }, {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser, registerUser } from '../services/authService';
 
@@ -12,6 +12,13 @@ const Login = ({ onLogin }) => {
   const navigate = useNavigate();  // Initialize navigate
 
   // Handle login form submission
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      onLogin(true);  // Set the login state
+      navigate("/homepage");  // Redirect to homepage
+    }
+  }, [navigate, onLogin]);
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -33,6 +40,7 @@ const Login = ({ onLogin }) => {
     try {
       const token = await registerUser(email, password, confirmPassword);
       localStorage.setItem('token', token);  // Store the JWT token
+      localStorage.setItem('email', email); 
       onLogin(true);  // Proceed to the app
     } catch (error) {
       alert('Registration failed');
@@ -89,7 +97,7 @@ const Login = ({ onLogin }) => {
                 className="mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <input
                 type="checkbox"
                 id="rememberMe"
@@ -100,7 +108,7 @@ const Login = ({ onLogin }) => {
               <label htmlFor="rememberMe" className="ml-2 text-sm">
                 Remember Me
               </label>
-            </div>
+            </div> */}
             <button
               type="submit"
               className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
@@ -110,7 +118,7 @@ const Login = ({ onLogin }) => {
           </form>
           <div className="flex justify-between mt-4 text-sm">
             <a
-              href="/forgot-password"
+              href="/contact"
               className="text-blue-600 hover:underline"
             >
               Forgot Password?

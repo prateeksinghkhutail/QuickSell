@@ -3,6 +3,7 @@ import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import Profile from "../components/profile";
 import BuyList from "../components/buyList";
+import SalesHistory from "../components/salesHistory";
 
 const ProfilePage = () => {
   return (
@@ -14,7 +15,12 @@ const ProfilePage = () => {
             <Profile />
           </div>
           <div className="w-full px-4 lg:w-3/5 xl:w-2/3">
-            <BuyList />
+          <div className="mb-8"> 
+              <BuyList />
+            </div>
+            <div className="mt-8">
+              <SalesHistory />
+            </div>
           </div>
         </div>
       </div>

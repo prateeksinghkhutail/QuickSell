@@ -6,21 +6,19 @@ import { useNavigate } from "react-router-dom";
 
 const Sell = () => {
   const [showForm, setShowForm] = useState(false);
-  const [bid, setBid] = useState(false);
   const [formData, setFormData] = useState({
     image: "",
     name: "",
     type: "",
     description: "",
     price: "",
-    bid: "",
   });
+  const [bid, setBid] = useState(false); // Separate bid state for the checkbox
   const navigate = useNavigate();
-  const [refreshList, setRefreshList] = useState(false); // Trigger for refreshing SellList
+  const [refreshList, setRefreshList] = useState(false);
 
   const userEmail = localStorage.getItem("email");
 
-  // Redirect to login if no user email found
   useEffect(() => {
     if (!userEmail) {
       alert("Please log in to continue");
@@ -40,18 +38,23 @@ const Sell = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Form submission logic: Send data to API
+    // Prepare form data for submission
     const formDataToSend = new FormData();
-    formDataToSend.append("image", formData.image); // Matches `prodImage` in the schema
-    formDataToSend.append("productName", formData.name); // Matches `productName` in the schema
-    formDataToSend.append("productType", formData.type); // Matches `productType` in the schema
-    formDataToSend.append("productDesc", formData.description); // Matches `productDesc` in the schema
-    formDataToSend.append("price", formData.price); // `price` matches schema
-    formDataToSend.append("bid", false); // Set bid to false or true as needed
+    formDataToSend.append("image", formData.image);
+    formDataToSend.append("productName", formData.name);
+    formDataToSend.append("productType", formData.type);
+    formDataToSend.append("productDesc", formData.description);
+    formDataToSend.append("bid", bid); // Append the boolean bid directly
 
-    // Default or required values
-    formDataToSend.append("sellerStudentID", userEmail); // Replace with actual seller ID if needed
-    formDataToSend.append("productID", `PROD_${Date.now()}`); // Unique product ID
+    // Conditionally set the price field based on the bid flag
+    if (bid) {
+      formDataToSend.append("base_price", formData.price); // Set as base_price if bidding is enabled
+    } else {
+      formDataToSend.append("price", formData.price); // Set as price if bidding is disabled
+    }
+
+    formDataToSend.append("sellerStudentID", userEmail);
+    formDataToSend.append("productID", `PROD_${Date.now()}`);
 
     try {
       const response = await fetch("http://localhost:8000/api/postProducts", {
@@ -68,7 +71,7 @@ const Sell = () => {
           price: "",
         });
         setShowForm(false);
-        setBid(false);
+        setBid(false); // Reset bid state
         setRefreshList(!refreshList);
       } else {
         console.log("Failed to list product.");
@@ -84,6 +87,7 @@ const Sell = () => {
       setShowForm(false);
     }
   };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -173,25 +177,27 @@ const Sell = () => {
                   type="number"
                   min="0"
                   name="price"
-                  placeholder="Selling Price"
+                  placeholder="Selling Price or Base Price"
                   value={formData.price}
                   onChange={handleChange}
                   required
                   className="w-full px-3 py-2 mt-2 border border-gray-600 rounded-md text-black placeholder-gray-300"
                 />
               </div>
+
               <div className="flex items-center">
-                <label htmlFor="bid" className="ml-2 text-sm">
-                  Want to Bid
-                </label>
                 <input
                   type="checkbox"
                   id="bid"
                   checked={bid}
                   onChange={(e) => setBid(e.target.checked)}
-                  className="h-4 w-4 ml-4 text-blue-600 border-gray-300 rounded"
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
                 />
+                <label htmlFor="bid" className="ml-2 text-sm">
+                  Enable Bidding
+                </label>
               </div>
+
               <button
                 type="submit"
                 className="w-full bg-green-500 py-2 px-4 rounded-md text-black hover:bg-green-700 transition duration-200"

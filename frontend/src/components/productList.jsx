@@ -9,11 +9,7 @@ const ProductList = ({ searchQuery, category }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        let url = "http://localhost:8000/api/products";
-        if (category) {
-          url += `?category=${encodeURIComponent(category)}`;
-        }
-        const response = await fetch(url);
+        const response = await fetch("http://localhost:8000/api/products");
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -33,16 +29,22 @@ const ProductList = ({ searchQuery, category }) => {
   }, []);
 
   useEffect(() => {
-    if (searchQuery) {
-      setFilteredProducts(
-        products.filter((product) =>
-          product.productName.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
-    } else {
-      setFilteredProducts(products);
+    let filtered = products;
+
+    // Apply category filter if category is selected
+    if (category  && category !== "None") {
+      filtered = filtered.filter((product) => product.productType === category);
     }
-  }, [searchQuery, products]);
+
+    // Apply search filter if searchQuery is provided
+    if (searchQuery) {
+      filtered = filtered.filter((product) =>
+        product.productName.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredProducts(filtered);
+  }, [searchQuery, category, products]);
 
   if (loading) return <p className="text-center">Loading products...</p>;
 

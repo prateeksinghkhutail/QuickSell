@@ -6,7 +6,7 @@ const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [walletBalance, setWalletBalance] = useState(0); // Store wallet balance
+  const [walletAmount, setWalletBalance] = useState(0); // Store wallet balance
   const dropdownRef = useRef(null); // Reference to the dropdown menu
 
   const toggleNav = () => {
@@ -29,14 +29,15 @@ const Navbar = () => {
   // Fetch wallet balance from the API
   const fetchWalletBalance = async (token) => {
     try {
-      const response = await fetch("http://localhost:8000/api/user/wallet", {
+      const email = localStorage.getItem("email"); // Fetch email from local storage
+      const response = await fetch(`http://localhost:8000/api/userDetails?email=${encodeURIComponent(email)}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Send token for authorization
         },
       });
       if (response.ok) {
         const data = await response.json();
-        setWalletBalance(data.walletBalance); // Assuming API returns { walletBalance: 5000 }
+        setWalletBalance(data.walletAmount); // Assuming API returns { walletBalance: 5000 }
       } else {
         console.error("Failed to fetch wallet balance.");
       }
@@ -114,13 +115,14 @@ const Navbar = () => {
                       Profile
                     </Link>
                     <div className="block px-4 py-2 text-gray-800">
-                      Wallet Balance: ${walletBalance}
+                      Wallet Balance: ${walletAmount}
                     </div>
                     <Link
-                      to="/logout"
+                      to="/login"
                       className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                       onClick={() => {
                         localStorage.removeItem("token");
+                        localStorage.removeItem("email");
                         setIsLoggedIn(false);
                         setDropdownOpen(false);
                       }}

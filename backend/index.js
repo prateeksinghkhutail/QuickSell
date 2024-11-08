@@ -5,6 +5,9 @@ const authRoutes = require('./routes/auth');
 const productFetchRoutes = require('./routes/productsFetch'); // New name
 const productSellRoutes = require('./routes/productsSell'); // New name
 const productsBySeller = require('./routes/productsBySeller');
+const productActions = require('./routes/buySellBid');
+const userDetails = require('./routes/userDetails');
+
 const path = require('path');
 
 const app = express();
@@ -21,6 +24,9 @@ app.use('/api', productFetchRoutes);
 
 app.use('/api', productSellRoutes);
 app.use('/api', productsBySeller);
+app.use('/api', productActions);
+app.use('/api', userDetails);
+
 // Serve static files from the uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

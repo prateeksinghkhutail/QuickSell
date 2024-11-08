@@ -1,3 +1,5 @@
+//present under sell tab
+
 import React, { useEffect, useState } from "react";
 const SellCard = ({ product }) => {
   const [bid, setBid] = useState(true);
@@ -16,11 +18,11 @@ const SellCard = ({ product }) => {
         <p className="text-gray-500">{product.description}</p>
         <div className="flex justify-between pt-2">
           <p className="text-gray-800 text-center rounded-md bg-green-500 p-2 font-semibold">
-            Selling Price: <span>${product.price}</span>
+            {product.bid?<span>Base Price: ₹{product.base_price}</span>:<span>Selling Price:₹{product.price} </span>}
           </p>
-          {bid && (
+          {product.bid && (
             <p className="text-gray-800 text-center rounded-md bg-green-500 p-2 font-semibold">
-              Bid Price: <span>${product.BidPrice}</span>
+              Bid Price: <span>₹{product.price}</span>
             </p>
           )}
         </div>

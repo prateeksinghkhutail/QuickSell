@@ -4,15 +4,22 @@ import Search from "../components/search";
 import Footer from "../components/footer";
 import ProductList from "../components/productList";
 import Filter from "../components/filter";
+
 const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [products, setProducts] = useState([]);
+  const [refresh, setRefresh] = useState(false); 
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
+  };
+
+  const triggerRefresh = () => {
+    setRefresh(!refresh); // Toggle refresh to trigger re-fetch
   };
 
   return (

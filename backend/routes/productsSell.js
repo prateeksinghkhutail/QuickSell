@@ -40,7 +40,7 @@ router.post('/postProducts', upload.single('image'), async (req, res) => {
     const prodImage = req.file ? `/uploads/${req.file.filename}` : null;
 
     // Validate required fields
-    if (!sellerStudentID || !productID || !productName || !productDesc || !productType || !price || bid === undefined) {
+    if (!sellerStudentID || !productID || !productName || !productDesc || !productType || bid === undefined) {
       return res.status(400).json({ msg: 'Please provide all required fields' });
     }
 
@@ -52,9 +52,9 @@ router.post('/postProducts', upload.single('image'), async (req, res) => {
       productDesc,
       productType,
       prodImage,
-      bid:false,
-      price,
-      base_price,          // optional field
+      bid,
+      price: price || null, // Only set if price is provided
+      base_price: base_price || null, // Only set if base_price is provided
       buyerStudentID,      // optional field
       productStatus: 'Available' // Default status
     });

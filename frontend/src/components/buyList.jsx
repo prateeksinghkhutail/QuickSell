@@ -4,7 +4,7 @@ import BuyCard from "./buyCard";
 const BuyList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const userEmail = localStorage.getItem("email");
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -31,16 +31,18 @@ const BuyList = () => {
   return (
     <div className="p-8 bg-gray-100 rounded-2xl">
       <div className="flex justify-center">
-        <h1 className="text-4xl font-bold text-green-500 mb-8">Product List</h1>
+        <h1 className="text-4xl font-bold text-green-500 mb-8">Product Purchase History</h1>
       </div>
 
       {/* Adjusted grid for 3 cards per row on larger screens */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {products.map((product) => (
+        {products.filter((product) => product.buyerStudentID === userEmail).map((product) => (
           <BuyCard key={product._id} product={product} />
         ))}
       </div>
     </div>
+
+    
   );
 };
 

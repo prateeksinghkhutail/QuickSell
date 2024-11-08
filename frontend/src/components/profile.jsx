@@ -4,11 +4,9 @@ const Profile = () => {
   const [profileData, setProfileData] = useState({
     image: "",
     name: "",
-    email: "",
     phone: "",
     location: "",
-    wallet: "",
-    referral: "",
+    referralCode: ""
   });
   const [isEditing, setIsEditing] = useState(false);
 
@@ -16,7 +14,8 @@ const Profile = () => {
     // Fetch profile data from the API when the component mounts
     const fetchProfileData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/profile"); // Replace with actual API endpoint
+        const email = localStorage.getItem("email"); // Get email from local storage
+        const response = await fetch(`http://localhost:8000/api/userDetails?email=${encodeURIComponent(email)}`);
         const data = await response.json();
         setProfileData(data);
       } catch (error) {
@@ -43,17 +42,15 @@ const Profile = () => {
     const formData = new FormData();
     formData.append("image", profileData.image);
     formData.append("name", profileData.name);
-    formData.append("email", profileData.email);
     formData.append("phone", profileData.phone);
-    formData.append("location", profileData.location);
-    formData.append("wallet", profileData.wallet);
-    formData.append("referral", profileData.referral);
+    formData.append("location", profileData.address);
 
     try {
-      const response = await fetch("http://localhost:8000/api/profile/update", {
+      const response = await fetch(`http://localhost:8000/api/updateUserProfile`, {
         method: "POST",
         body: formData,
       });
+
       if (response.ok) {
         alert("Profile updated successfully!");
         setIsEditing(false);
@@ -114,12 +111,12 @@ const Profile = () => {
               </svg>
             </label>
           </div>
-          <button
+          {/* <button
             className="bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300 ring ring-gray-300 hover:ring-indigo-300"
             onClick={() => setIsEditing(!isEditing)}
           >
             {isEditing ? "Cancel" : "Edit Profile"}
-          </button>
+          </button> */}
         </div>
 
         <form onSubmit={handleSave} className="space-y-4">
@@ -144,9 +141,9 @@ const Profile = () => {
               type="email"
               name="email"
               value={profileData.email}
-              onChange={handleChange}
+              placeholder="Email ID cannot be changed"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-              disabled={!isEditing}
+              disabled
             />
           </div>
           <div>
@@ -156,7 +153,7 @@ const Profile = () => {
             <input
               type="tel"
               name="phone"
-              value={profileData.phone}
+              value={profileData.contactNo}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
               disabled={!isEditing}
@@ -169,7 +166,7 @@ const Profile = () => {
             <input
               type="text"
               name="location"
-              value={profileData.location}
+              value={profileData.address}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
               disabled={!isEditing}
@@ -177,28 +174,14 @@ const Profile = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Wallet Amount
-            </label>
-            <input
-              type="number"
-              name="wallet"
-              value={profileData.wallet}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-              disabled={!isEditing}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Referral
+              Referral Code
             </label>
             <input
               type="text"
-              name="referral"
-              value={profileData.referral}
-              onChange={handleChange}
+              name="location"
+              value={profileData.referralCode}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-              disabled={!isEditing}
+              disabled
             />
           </div>
           {isEditing && (
