@@ -16,12 +16,16 @@ const SellCard = ({ product }) => {
         </h2>
         <p className="text-gray-500 text-center">Type: {product.productType}</p>
         <p className="text-gray-500">{product.description}</p>
-        <div className="flex justify-between pt-2">
+        <div className="flex flex-col justify-between pt-2">
           <p className="text-gray-800 text-center rounded-md bg-green-500 p-2 font-semibold">
-            {product.bid?<span>Base Price: ₹{product.base_price}</span>:<span>Selling Price:₹{product.price} </span>}
+            {product.bid ? (
+              <span>Base Price: ₹{product.base_price}</span>
+            ) : (
+              <span>Selling Price:₹{product.price} </span>
+            )}
           </p>
           {product.bid && (
-            <p className="text-gray-800 text-center rounded-md bg-green-500 p-2 font-semibold">
+            <p className="text-gray-800 mt-2 text-center rounded-md bg-green-500 p-2 font-semibold">
               Bid Price: <span>₹{product.price}</span>
             </p>
           )}

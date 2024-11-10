@@ -32,14 +32,21 @@ const ProductList = ({ searchQuery, category }) => {
     let filtered = products;
 
     // Apply category filter if category is selected
-    if (category  && category !== "None") {
-      filtered = filtered.filter((product) => product.productType === category);
+    if (category && category !== "None") {
+      filtered = filtered.filter(
+        (product) =>
+          product.productType.toLowerCase() === category.toLowerCase()
+      );
     }
 
     // Apply search filter if searchQuery is provided
     if (searchQuery) {
-      filtered = filtered.filter((product) =>
-        product.productName.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter(
+        (product) =>
+          product.productName
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          product.productType.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const BuyCard = ({ product }) => {
+const BuyCard = ({ product, refreshProducts }) => {
   const [buttonState, setButtonState] = useState("Accept");
   const [showModal, setShowModal] = useState(false);
   const [sellerDetails, setSellerDetails] = useState(null);
@@ -16,13 +16,16 @@ const BuyCard = ({ product }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productId: product._id,
-          buyerEmail: userEmail, 
+          buyerEmail: userEmail,
         }),
       });
 
       if (response.ok) {
         setButtonState("View Details");
-        alert("Product accepted and marked as 'Sales Completed'. Wallets updated.");
+        alert(
+          "Product accepted and marked as 'Sales Completed'. Wallets updated."
+        );
+        refreshProducts(); // Trigger refresh
       } else {
         console.error("Failed to accept product.");
       }
@@ -43,6 +46,7 @@ const BuyCard = ({ product }) => {
 
       if (response.ok) {
         alert("Product status reset to 'Available'.");
+        refreshProducts(); // Trigger refresh
       } else {
         console.error("Failed to reject product.");
       }
@@ -65,8 +69,11 @@ const BuyCard = ({ product }) => {
 
       if (response.ok) {
         alert("Bid placed successfully!");
+        refreshProducts(); // Trigger refresh if necessary after bidding
       } else {
-        alert("Place a bid higher than the current bid and check your wallet amount.");
+        alert(
+          "Place a bid higher than the current bid and check your wallet amount."
+        );
       }
     } catch (error) {
       console.error("Error placing bid:", error);
@@ -98,12 +105,13 @@ const BuyCard = ({ product }) => {
         alt={product.productName}
         className="w-full h-48 object-cover mb-4"
       />
-      <div className="p-4">
-        <h2 className="text-xl font-semibold text-gray-800">{product.productName}</h2>
+      <div className="p-4 text-center">
+        <h2 className="text-xl font-semibold text-gray-800">
+          {product.productName}
+        </h2>
         <p className="text-gray-500">Type: {product.productType}</p>
         <p className="text-gray-700 font-semibold">Price: ₹{product.price}</p>
-        
-        {/* Conditional rendering based on product status */}
+
         {product.productStatus === "Sales Completed" ? (
           <button
             onClick={handleViewDetailsClick}
@@ -157,10 +165,18 @@ const BuyCard = ({ product }) => {
             </h3>
             {sellerDetails ? (
               <>
-                <p className="text-gray-700"><strong>Name:</strong> {sellerDetails.name}</p>
-                <p className="text-gray-700"><strong>Email:</strong> {sellerDetails.email}</p>
-                <p className="text-gray-700"><strong>Phone:</strong> {sellerDetails.contactNo}</p>
-                <p className="text-gray-700"><strong>Address:</strong> {sellerDetails.address}</p>
+                <p className="text-gray-700">
+                  <strong>Name:</strong> {sellerDetails.name}
+                </p>
+                <p className="text-gray-700">
+                  <strong>Email:</strong> {sellerDetails.email}
+                </p>
+                <p className="text-gray-700">
+                  <strong>Phone:</strong> {sellerDetails.contactNo}
+                </p>
+                <p className="text-gray-700">
+                  <strong>Address:</strong> {sellerDetails.address}
+                </p>
               </>
             ) : (
               <p>Loading...</p>

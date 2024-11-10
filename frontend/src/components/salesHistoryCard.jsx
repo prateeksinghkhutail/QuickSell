@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SalesCard = ({ product }) => {
+const SalesCard = ({ product, refreshProducts }) => {
   const [buttonState, setButtonState] = useState("Accept");
   const [showModal, setShowModal] = useState(false);
   const [sellerDetails, setSellerDetails] = useState(null);
   const navigate = useNavigate();
-  const userEmail = localStorage.getItem("email");
   const [bidAmount, setBidAmount] = useState("");
 
   const handleAcceptBidClick = async () => {
@@ -19,13 +18,13 @@ const SalesCard = ({ product }) => {
 
       if (response.ok) {
         setButtonState("View Details");
+        refreshProducts(); // Trigger a refresh after accepting
       } else {
         console.error("Failed to accept product.");
       }
     } catch (error) {
       console.error("Error accepting product:", error);
     }
-    window.location.reload();
   };
 
   const handleViewDetailsClick = async () => {
@@ -93,10 +92,18 @@ const SalesCard = ({ product }) => {
             </h3>
             {sellerDetails ? (
               <>
-                <p className="text-gray-700"><strong>Name:</strong> {sellerDetails.name}</p>
-                <p className="text-gray-700"><strong>Email:</strong> {sellerDetails.email}</p>
-                <p className="text-gray-700"><strong>Phone:</strong> {sellerDetails.contactNo}</p>
-                <p className="text-gray-700"><strong>Address:</strong> {sellerDetails.address}</p>
+                <p className="text-gray-700">
+                  <strong>Name:</strong> {sellerDetails.name}
+                </p>
+                <p className="text-gray-700">
+                  <strong>Email:</strong> {sellerDetails.email}
+                </p>
+                <p className="text-gray-700">
+                  <strong>Phone:</strong> {sellerDetails.contactNo}
+                </p>
+                <p className="text-gray-700">
+                  <strong>Address:</strong> {sellerDetails.address}
+                </p>
               </>
             ) : (
               <p>Loading...</p>

@@ -150,15 +150,29 @@ const Sell = () => {
               </div>
 
               <div>
-                <input
-                  type="text"
+                <label
+                  htmlFor="type"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Select Type
+                </label>
+                <select
                   name="type"
-                  placeholder="Enter the Type"
+                  id="type"
                   value={formData.type}
                   onChange={handleChange}
                   required
                   className="w-full px-3 py-2 mt-2 border border-gray-600 rounded-md text-black placeholder-gray-300"
-                />
+                >
+                  <option value="" disabled>
+                    Select Type
+                  </option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="General">General</option>
+                  <option value="Cycle">Cycle</option>
+                  <option value="Books">Books</option>
+                  <option value="Household Items">Household Items</option>
+                </select>
               </div>
 
               <div>

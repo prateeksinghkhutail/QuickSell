@@ -49,7 +49,9 @@ const ProductCard = ({ product }) => {
       if (response.ok) {
         alert("Bid placed successfully!");
       } else {
-        alert("Place a bid higher than the current bid and check your wallet amount.");
+        alert(
+          "Place a bid higher than the current bid and check your wallet amount."
+        );
       }
     } catch (error) {
       console.error("Error placing bid:", error);
@@ -57,7 +59,10 @@ const ProductCard = ({ product }) => {
     window.location.reload();
   };
 
-  if (product.sellerStudentID === userEmail || product.productStatus === "Sales Completed") {
+  if (
+    product.sellerStudentID === userEmail ||
+    product.productStatus === "Sales Completed"
+  ) {
     return null;
   }
 
@@ -73,31 +78,38 @@ const ProductCard = ({ product }) => {
           {product.productName}
         </h2>
         <p className="text-gray-500">Type: {product.productType}</p>
-        
-        {!product.bid ? (
-      <p className="text-gray-700 font-semibold">Price: ₹{product.price}</p>) : (
-      <div>
-        {product.price ? (
-          <>
-            <p className="text-gray-700 font-semibold">Highest Bid: ₹{product.price}</p>
-            <p className="text-gray-700 font-semibold">Base Price: ₹{product.base_price}</p>
-          </>
-        ) : (
-          <>
-          <p className="text-gray-700 font-semibold">No bids placed</p>
-          <p className="text-gray-700 font-semibold">Base Price: ₹{product.base_price}</p>
-          </>
-        )}
-      </div>
-)}
 
-        <div className="flex space-x-4 mt-4">
+        {!product.bid ? (
+          <p className="text-gray-700 font-semibold">Price: ₹{product.price}</p>
+        ) : (
+          <div>
+            {product.price ? (
+              <>
+                <p className="text-gray-700 font-semibold">
+                  Highest Bid: ₹{product.price}
+                </p>
+                <p className="text-gray-700 font-semibold">
+                  Base Price: ₹{product.base_price}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-gray-700 font-semibold">No bids placed</p>
+                <p className="text-gray-700 font-semibold">
+                  Base Price: ₹{product.base_price}
+                </p>
+              </>
+            )}
+          </div>
+        )}
+
+        <div className=" space-x-4 mt-4">
           {!product.bid ? (
-            <div className="flex space-x-4 mt-4">
+            <div className="flex justify-center space-x-4 mt-4">
               {product.productStatus === "Available" ? (
                 <button
                   onClick={handleBuyClick}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                  className="bg-blue-600  text-white px-4 py-2 rounded-md hover:bg-blue-700"
                 >
                   Buy
                 </button>
@@ -108,20 +120,24 @@ const ProductCard = ({ product }) => {
               )}
             </div>
           ) : (
-            <div>
-              <button
-                onClick={handleBidClick}
-                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
-              >
-                Bid
-              </button>
-              <input
-                type="number"
-                value={bidAmount}
-                onChange={(e) => setBidAmount(e.target.value)}
-                placeholder="Enter bid"
-                className="rounded-md border text-black ml-2"
-              />
+            <div className="flex justify-center text-center flex-col">
+              <div>
+                <input
+                  type="number"
+                  value={bidAmount}
+                  onChange={(e) => setBidAmount(e.target.value)}
+                  placeholder="Enter bid"
+                  className="rounded-md border text-black ml-2"
+                />
+              </div>
+              <div>
+                <button
+                  onClick={handleBidClick}
+                  className="bg-green-600 mt-2 text-white px-4 py-2 rounded-md hover:bg-green-700"
+                >
+                  Bid
+                </button>
+              </div>
             </div>
           )}
         </div>
